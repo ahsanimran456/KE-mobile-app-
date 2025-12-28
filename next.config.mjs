@@ -3,11 +3,6 @@ import withPWA from 'next-pwa'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-   // ✅ Turbopack enabled (required in Next.js 16)
-  turbopack: {},
-  eslint: {
-    ignoreBuildErrors: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
