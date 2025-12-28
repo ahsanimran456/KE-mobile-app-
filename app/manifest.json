@@ -1,35 +1,38 @@
 {
-  "name": "My Billing App",
-  "short_name": "Billing",
-  "description": "Utility billing and payment management app",
+  "name": "TaskMaster - Todo App",
+  "short_name": "TaskMaster",
+  "description": "Organize your tasks with ease. A beautiful and intuitive task management app.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#F29200",
-  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "utilities"],
   "icons": [
     {
       "src": "/icon-192x192.jpg",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icon-512x512.jpg",
-      "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any"
     },
     {
       "src": "/icon-192x192-maskable.jpg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512x512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
     },
     {
       "src": "/icon-512x512-maskable.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "maskable"
     }
   ],
@@ -37,8 +40,20 @@
     {
       "src": "/screenshot-mobile.jpg",
       "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "TaskMaster mobile view"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Add New Task",
+      "short_name": "Add Task",
+      "description": "Quickly add a new task",
+      "url": "/todos?action=add",
+      "icons": [{ "src": "/icon-192x192.jpg", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }

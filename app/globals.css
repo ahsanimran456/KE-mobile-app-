@@ -4,81 +4,80 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated color theme for KE Live-inspired PWA with orange/white palette */
+  /* White and Orange theme for TodoApp */
   --background: oklch(0.99 0 0);
-  --foreground: oklch(0.2 0.01 262.33);
+  --foreground: oklch(0.15 0.01 262.33);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.01 262.33);
+  --card-foreground: oklch(0.15 0.01 262.33);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.01 262.33);
-  --primary: oklch(0.64 0.18 55.5); /* #F29200 orange */
+  --popover-foreground: oklch(0.15 0.01 262.33);
+  --primary: oklch(0.7 0.18 55); /* Vibrant Orange #F29200 */
   --primary-foreground: oklch(1 0 0); /* white */
-  --secondary: oklch(0.96 0.01 262.33);
-  --secondary-foreground: oklch(0.2 0.01 262.33);
+  --secondary: oklch(0.97 0.01 55);
+  --secondary-foreground: oklch(0.15 0.01 262.33);
   --muted: oklch(0.96 0.005 262.33);
-  --muted-foreground: oklch(0.5 0.01 262.33);
-  --accent: oklch(0.96 0.01 262.33);
-  --accent-foreground: oklch(0.2 0.01 262.33);
+  --muted-foreground: oklch(0.45 0.01 262.33);
+  --accent: oklch(0.97 0.02 55);
+  --accent-foreground: oklch(0.15 0.01 262.33);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.005 262.33);
   --input: oklch(0.92 0.005 262.33);
-  --ring: oklch(0.64 0.18 55.5);
-  --chart-1: oklch(0.64 0.18 55.5);
-  --chart-2: oklch(0.6 0.15 45);
-  --chart-3: oklch(0.55 0.12 35);
-  --chart-4: oklch(0.7 0.2 65);
-  --chart-5: oklch(0.5 0.1 25);
+  --ring: oklch(0.7 0.18 55);
+  --chart-1: oklch(0.7 0.18 55);
+  --chart-2: oklch(0.65 0.15 45);
+  --chart-3: oklch(0.6 0.12 35);
+  --chart-4: oklch(0.75 0.2 65);
+  --chart-5: oklch(0.55 0.1 25);
   --radius: 0.75rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary: oklch(0.7 0.18 55);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-ring: oklch(0.7 0.18 55);
 }
 
 .dark {
-  --background: oklch(0.15 0.01 262.33);
+  --background: oklch(0.12 0.01 262.33);
   --foreground: oklch(0.98 0 0);
-  --card: oklch(0.18 0.01 262.33);
+  --card: oklch(0.15 0.01 262.33);
   --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.18 0.01 262.33);
+  --popover: oklch(0.15 0.01 262.33);
   --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.64 0.18 55.5);
+  --primary: oklch(0.7 0.18 55);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.25 0.01 262.33);
+  --secondary: oklch(0.2 0.01 262.33);
   --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.25 0.01 262.33);
-  --muted-foreground: oklch(0.6 0.01 262.33);
-  --accent: oklch(0.25 0.01 262.33);
+  --muted: oklch(0.2 0.01 262.33);
+  --muted-foreground: oklch(0.5 0.01 262.33);
+  --accent: oklch(0.2 0.01 262.33);
   --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.45 0.2 27.325);
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.25 0.01 262.33);
-  --input: oklch(0.25 0.01 262.33);
-  --ring: oklch(0.64 0.18 55.5);
-  --chart-1: oklch(0.64 0.18 55.5);
-  --chart-2: oklch(0.6 0.15 45);
-  --chart-3: oklch(0.55 0.12 35);
-  --chart-4: oklch(0.7 0.2 65);
-  --chart-5: oklch(0.5 0.1 25);
-  --sidebar: oklch(0.205 0 0);
+  --input: oklch(0.2 0.01 262.33);
+  --ring: oklch(0.7 0.18 55);
+  --chart-1: oklch(0.7 0.18 55);
+  --chart-2: oklch(0.65 0.15 45);
+  --chart-3: oklch(0.6 0.12 35);
+  --chart-4: oklch(0.75 0.2 65);
+  --chart-5: oklch(0.55 0.1 25);
+  --sidebar: oklch(0.12 0.01 262.33);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.7 0.18 55);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent: oklch(0.18 0.01 262.33);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --sidebar-border: oklch(0.2 0.01 262.33);
+  --sidebar-ring: oklch(0.7 0.18 55);
 }
 
 @theme inline {
-  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -124,4 +123,147 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom animations */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s linear infinite;
+  background-size: 200% 100%;
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 2s ease-in-out infinite;
+}
+
+/* Delay utilities for animations */
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
+.delay-700 {
+  animation-delay: 700ms;
+}
+.delay-1000 {
+  animation-delay: 1000ms;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Selection color - Orange */
+::selection {
+  background: rgba(242, 146, 0, 0.3);
+  color: inherit;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 2px solid rgba(242, 146, 0, 0.5);
+  outline-offset: 2px;
+}
+
+/* Remove autofill styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1a1a1a;
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Safe area padding for PWA */
+@supports (padding: max(0px)) {
+  .safe-area-inset-top {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+  .safe-area-inset-bottom {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+  .safe-area-inset-left {
+    padding-left: max(0px, env(safe-area-inset-left));
+  }
+  .safe-area-inset-right {
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* Prevent overscroll/bounce on iOS */
+html, body {
+  overscroll-behavior: none;
+}
+
+/* Touch action for mobile */
+.touch-manipulation {
+  touch-action: manipulation;
 }
