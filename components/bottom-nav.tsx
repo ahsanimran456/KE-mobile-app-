@@ -1,7 +1,10 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
+import Link from "next/link"
 import { Home, CalendarCheck, MessageCircle, BarChart3, User } from "lucide-react"
+import { motion } from "framer-motion"
+import { useState, useEffect, useCallback } from "react"
 
 const navItems = [
   { icon: Home, label: "Home", href: "/home" },
@@ -13,39 +16,88 @@ const navItems = [
 
 export default function BottomNav() {
   const pathname = usePathname()
-  const router = useRouter()
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
+  const minSwipeDistance = 80
+
+  const getCurrentIndex = useCallback(() => {
+    const base = "/" + pathname.split("/")[1]
+    return navItems.findIndex(item => item.href === base)
+  }, [pathname])
+
+  useEffect(() => {
+    const onTouchStart = (e: TouchEvent) => {
+      setTouchEnd(null)
+      setTouchStart(e.targetTouches[0].clientX)
+    }
+
+    const onTouchMove = (e: TouchEvent) => {
+      setTouchEnd(e.targetTouches[0].clientX)
+    }
+
+    const onTouchEnd = () => {
+      if (!touchStart || !touchEnd) return
+      
+      const distance = touchStart - touchEnd
+      const isLeftSwipe = distance > minSwipeDistance
+      const isRightSwipe = distance < -minSwipeDistance
+      
+      const currentIndex = getCurrentIndex()
+      
+      if (isLeftSwipe && currentIndex < navItems.length - 1) {
+        window.location.href = navItems[currentIndex + 1].href
+      }
+      
+      if (isRightSwipe && currentIndex > 0) {
+        window.location.href = navItems[currentIndex - 1].href
+      }
+
+      setTouchStart(null)
+      setTouchEnd(null)
+    }
+
+    const element = document.body
+    element.addEventListener('touchstart', onTouchStart, { passive: true })
+    element.addEventListener('touchmove', onTouchMove, { passive: true })
+    element.addEventListener('touchend', onTouchEnd, { passive: true })
+
+    return () => {
+      element.removeEventListener('touchstart', onTouchStart)
+      element.removeEventListener('touchmove', onTouchMove)
+      element.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [touchStart, touchEnd, getCurrentIndex])
+
+  const activeIndex = getCurrentIndex()
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="bg-gradient-to-t from-[#0a0f14] via-[#0d1218] to-[#0d1218]/95 backdrop-blur-xl border-t border-gray-800/50 safe-bottom">
-        <div className="flex items-center justify-around py-2 px-2">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+      <div className="bg-[#0d1117] border-t border-gray-800">
+        <div className="flex items-center justify-around py-1.5 px-1">
+          {navItems.map((item, index) => {
+            const isActive = activeIndex === index
             
             return (
-              <button
+              <Link
                 key={item.href}
-                onClick={() => router.push(item.href)}
-                className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all active:scale-95 ${
-                  isActive ? "text-cyan-400" : "text-gray-500"
-                }`}
+                href={item.href}
+                className="flex flex-col items-center gap-0.5 py-1 px-3"
               >
-                <div className="relative">
-                  {isActive && (
-                    <div className="absolute -inset-2 bg-cyan-500/20 rounded-xl blur-md" />
-                  )}
-                  <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+                <motion.div 
+                  whileTap={{ scale: 0.9 }}
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center ${
                     isActive 
-                      ? "bg-gradient-to-br from-cyan-500 to-cyan-600 shadow-lg shadow-cyan-500/40" 
-                      : "bg-gray-800/50"
-                  }`}>
-                    <item.icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-500"}`} />
-                  </div>
-                </div>
-                <span className={`text-[10px] font-medium ${isActive ? "text-cyan-400" : "text-gray-500"}`}>
+                      ? "bg-gradient-to-br from-teal-500 to-teal-600 shadow-md shadow-teal-500/30" 
+                      : "bg-gray-800/60"
+                  }`}
+                >
+                  <item.icon className={`w-[18px] h-[18px] ${isActive ? "text-white" : "text-gray-500"}`} />
+                </motion.div>
+                <span className={`text-[9px] font-medium ${isActive ? "text-teal-400" : "text-gray-500"}`}>
                   {item.label}
                 </span>
-              </button>
+              </Link>
             )
           })}
         </div>

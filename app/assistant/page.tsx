@@ -2,13 +2,16 @@
 
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, Send, Loader2, Bot, User, Sparkles, Trash2 } from "lucide-react"
+import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
+import { ArrowLeft, Send, Loader2, Bot, User, Sparkles, Trash2, Brain } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/AuthContext"
 import { saveChat, getChatHistory, clearChatHistory } from "@/lib/firestore"
 import openai from "@/lib/openai"
 import { toast } from "sonner"
 import BottomNav from "@/components/bottom-nav"
+import Loading from "@/components/loading"
 
 interface Message {
   id: string
@@ -137,11 +140,7 @@ export default function AssistantPage() {
   }
 
   if (authLoading || initialLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0f14]">
-        <div className="w-10 h-10 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <Loading />
   }
 
   return (
@@ -150,61 +149,84 @@ export default function AssistantPage() {
       <div className="px-4 pt-3 pb-2 safe-top border-b border-gray-800/50 bg-[#0a0f14]/95 backdrop-blur-xl sticky top-0 z-40">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={() => router.push("/home")} className="w-9 h-9 rounded-xl bg-gray-800/60 flex items-center justify-center text-gray-400">
-              <ArrowLeft className="w-4 h-4" />
-            </button>
+            <Link href="/home">
+              <motion.div 
+                whileTap={{ scale: 0.9 }}
+                className="w-9 h-9 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 flex items-center justify-center text-gray-400 shadow-lg"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </motion.div>
+            </Link>
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center">
-                <Bot className="w-4 h-4 text-cyan-400" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                <Brain className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-white text-sm font-medium">AI Assistant</p>
+                <p className="text-white text-sm font-semibold">AI Assistant</p>
                 <p className="text-green-400 text-[10px] flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />Online
+                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                  Online
                 </p>
               </div>
             </div>
           </div>
-          <button onClick={handleClearChat} className="w-9 h-9 rounded-xl bg-gray-800/60 flex items-center justify-center text-gray-400">
+          <motion.button 
+            whileTap={{ scale: 0.9 }}
+            onClick={handleClearChat} 
+            className="w-9 h-9 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 flex items-center justify-center text-gray-400 shadow-lg"
+          >
             <Trash2 className="w-4 h-4" />
-          </button>
+          </motion.button>
         </div>
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-3 pb-36">
-        {messages.map((message) => (
-          <div key={message.id} className={`flex gap-2 mb-3 ${message.role === "user" ? "flex-row-reverse" : ""}`}>
-            <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
-              message.role === "assistant" ? "bg-cyan-500/20 border border-cyan-500/30" : "bg-gray-700"
-            }`}>
-              {message.role === "assistant" ? <Bot className="w-3.5 h-3.5 text-cyan-400" /> : <User className="w-3.5 h-3.5 text-gray-300" />}
-            </div>
-            <div className={`max-w-[80%] ${message.role === "user" ? "text-right" : ""}`}>
-              <div className={`p-2.5 rounded-2xl text-sm ${
-                message.role === "assistant"
-                  ? "bg-gray-800/60 border border-gray-700/50 rounded-tl-md text-gray-200"
-                  : "bg-cyan-500/20 border border-cyan-500/30 rounded-tr-md text-white"
+        <AnimatePresence>
+          {messages.map((message) => (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`flex gap-2 mb-3 ${message.role === "user" ? "flex-row-reverse" : ""}`}
+            >
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md ${
+                message.role === "assistant" 
+                  ? "bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border border-cyan-500/30" 
+                  : "bg-gradient-to-br from-gray-700 to-gray-800"
               }`}>
-                <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                {message.role === "assistant" ? <Bot className="w-4 h-4 text-cyan-400" /> : <User className="w-4 h-4 text-gray-300" />}
               </div>
-              <p className="text-gray-600 text-[10px] mt-0.5 px-1">
-                {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-              </p>
-            </div>
-          </div>
-        ))}
+              <div className={`max-w-[80%] ${message.role === "user" ? "text-right" : ""}`}>
+                <div className={`p-3 rounded-2xl text-sm shadow-lg ${
+                  message.role === "assistant"
+                    ? "bg-gradient-to-br from-gray-800/60 to-gray-900/60 border border-gray-700/50 rounded-tl-md text-gray-200"
+                    : "bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border border-cyan-500/30 rounded-tr-md text-white"
+                }`}>
+                  <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                </div>
+                <p className="text-gray-600 text-[10px] mt-0.5 px-1">
+                  {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
 
         {loading && (
           <div className="flex gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center">
-              <Bot className="w-3.5 h-3.5 text-cyan-400" />
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border border-cyan-500/30 flex items-center justify-center shadow-md">
+              <Bot className="w-4 h-4 text-cyan-400" />
             </div>
-            <div className="bg-gray-800/60 border border-gray-700/50 rounded-2xl rounded-tl-md p-2.5">
+            <div className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 border border-gray-700/50 rounded-2xl rounded-tl-md p-3 shadow-lg">
               <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"
+                    style={{ animationDelay: `${i * 150}ms` }}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -221,10 +243,14 @@ export default function AssistantPage() {
           </div>
           <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
             {quickPrompts.map((p, i) => (
-              <button key={i} onClick={() => setInput(p.prompt)}
-                className="px-3 py-1.5 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-400 text-xs whitespace-nowrap">
+              <motion.button
+                key={i}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setInput(p.prompt)}
+                className="px-3 py-1.5 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 text-gray-400 text-xs whitespace-nowrap shadow-md"
+              >
                 {p.text}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -239,16 +265,18 @@ export default function AssistantPage() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
             placeholder="Ask anything..."
-            className="flex-1 h-11 px-4 bg-gray-800/60 border border-gray-700/50 rounded-xl text-white text-sm placeholder:text-gray-500 focus:border-cyan-500/50 focus:outline-none"
+            className="flex-1 h-12 px-4 bg-gradient-to-br from-gray-800/60 to-gray-900/60 border border-gray-700/50 rounded-xl text-white text-sm placeholder:text-gray-500 focus:border-cyan-500/50 focus:outline-none shadow-lg"
             disabled={loading}
           />
-          <Button
-            onClick={sendMessage}
-            disabled={!input.trim() || loading}
-            className="h-11 w-11 bg-cyan-500 hover:bg-cyan-400 rounded-xl p-0"
-          >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin text-gray-900" /> : <Send className="w-4 h-4 text-gray-900" />}
-          </Button>
+          <motion.div whileTap={{ scale: 0.9 }}>
+            <Button
+              onClick={sendMessage}
+              disabled={!input.trim() || loading}
+              className="h-12 w-12 bg-gradient-to-br from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 rounded-xl p-0 shadow-lg shadow-cyan-500/30"
+            >
+              {loading ? <Loader2 className="w-5 h-5 animate-spin text-white" /> : <Send className="w-5 h-5 text-white" />}
+            </Button>
+          </motion.div>
         </div>
       </div>
 

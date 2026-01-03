@@ -2,67 +2,58 @@
 
 import { motion } from "framer-motion"
 
-interface SplashProps {
-  onComplete?: () => void
-}
-
-export default function Splash({ onComplete }: SplashProps) {
+export default function Loading() {
   return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0f14] overflow-hidden"
-    >
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0f14] relative overflow-hidden">
       {/* Glow Background */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <motion.div
-          animate={{ scale: [1, 1.3, 1], opacity: [0.15, 0.3, 0.15] }}
+          animate={{ scale: [1, 1.3, 1], opacity: [0.15, 0.25, 0.15] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-80 h-80 bg-cyan-500/30 rounded-full blur-[100px]"
+          className="w-72 h-72 bg-cyan-500/30 rounded-full blur-[80px]"
         />
         <motion.div
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.1, 0.25, 0.1] }}
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.1, 0.2, 0.1] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-          className="absolute w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px]"
+          className="absolute w-56 h-56 bg-emerald-500/20 rounded-full blur-[60px]"
         />
       </div>
 
       {/* Robot Character */}
       <motion.div
-        initial={{ scale: 0, rotate: -180 }}
-        animate={{ scale: 1, rotate: 0, y: [0, -12, 0] }}
-        transition={{ 
-          scale: { type: "spring", stiffness: 200, damping: 15 },
-          rotate: { type: "spring", stiffness: 200, damping: 15 },
-          y: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }
-        }}
+        animate={{ y: [0, -12, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         className="relative z-10"
       >
-        <svg width="180" height="200" viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="160" height="180" viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="bodyGradSplash" x1="80" y1="40" x2="80" y2="140" gradientUnits="userSpaceOnUse">
+            {/* Gradients */}
+            <linearGradient id="bodyGrad" x1="80" y1="40" x2="80" y2="140" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#5EEAD4"/>
               <stop offset="50%" stopColor="#2DD4BF"/>
               <stop offset="100%" stopColor="#14B8A6"/>
             </linearGradient>
-            <linearGradient id="headGradSplash" x1="80" y1="20" x2="80" y2="90" gradientUnits="userSpaceOnUse">
+            <linearGradient id="headGrad" x1="80" y1="20" x2="80" y2="90" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#99F6E4"/>
               <stop offset="50%" stopColor="#5EEAD4"/>
               <stop offset="100%" stopColor="#2DD4BF"/>
             </linearGradient>
-            <linearGradient id="eyeGradSplash" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="eyeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#34D399"/>
               <stop offset="100%" stopColor="#10B981"/>
             </linearGradient>
-            <filter id="glowSplash" x="-50%" y="-50%" width="200%" height="200%">
+            <linearGradient id="glowGrad" x1="80" y1="0" x2="80" y2="180" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#2DD4BF" stopOpacity="0.5"/>
+              <stop offset="100%" stopColor="#2DD4BF" stopOpacity="0"/>
+            </linearGradient>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
               <feMerge>
                 <feMergeNode in="coloredBlur"/>
                 <feMergeNode in="SourceGraphic"/>
               </feMerge>
             </filter>
-            <filter id="shadowSplash" x="-20%" y="-20%" width="140%" height="140%">
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
               <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#0d9488" floodOpacity="0.4"/>
             </filter>
           </defs>
@@ -73,35 +64,39 @@ export default function Splash({ onComplete }: SplashProps) {
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             style={{ transformOrigin: "80px 25px" }}
           >
-            <circle cx="80" cy="8" r="6" fill="#5EEAD4" filter="url(#glowSplash)"/>
+            <circle cx="80" cy="8" r="6" fill="#5EEAD4" filter="url(#glow)"/>
             <rect x="77" y="12" width="6" height="15" rx="3" fill="#2DD4BF"/>
           </motion.g>
           
           {/* Ears/Headphones */}
-          <ellipse cx="28" cy="60" rx="14" ry="20" fill="url(#bodyGradSplash)" filter="url(#shadowSplash)"/>
+          <ellipse cx="28" cy="60" rx="14" ry="20" fill="url(#bodyGrad)" filter="url(#shadow)"/>
           <ellipse cx="28" cy="60" rx="8" ry="12" fill="#134E4A"/>
-          <ellipse cx="132" cy="60" rx="14" ry="20" fill="url(#bodyGradSplash)" filter="url(#shadowSplash)"/>
+          <ellipse cx="132" cy="60" rx="14" ry="20" fill="url(#bodyGrad)" filter="url(#shadow)"/>
           <ellipse cx="132" cy="60" rx="8" ry="12" fill="#134E4A"/>
           
           {/* Head */}
-          <ellipse cx="80" cy="55" rx="48" ry="42" fill="url(#headGradSplash)" filter="url(#shadowSplash)"/>
+          <ellipse cx="80" cy="55" rx="48" ry="42" fill="url(#headGrad)" filter="url(#shadow)"/>
+          
+          {/* Face plate */}
           <ellipse cx="80" cy="58" rx="38" ry="32" fill="#F0FDFA" fillOpacity="0.15"/>
           
           {/* Eyes */}
-          <g filter="url(#glowSplash)">
+          <g filter="url(#glow)">
+            {/* Left eye */}
             <ellipse cx="60" cy="52" rx="12" ry="14" fill="#0D1F1C"/>
-            <ellipse cx="60" cy="52" rx="9" ry="11" fill="url(#eyeGradSplash)"/>
+            <ellipse cx="60" cy="52" rx="9" ry="11" fill="url(#eyeGrad)"/>
             <motion.ellipse 
-              cx="60" cy="52" rx="9" ry="11" fill="url(#eyeGradSplash)"
+              cx="60" cy="52" rx="9" ry="11" fill="url(#eyeGrad)"
               animate={{ scaleY: [1, 0.1, 1] }}
               transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
             />
             <circle cx="63" cy="48" r="3" fill="white" fillOpacity="0.8"/>
             
+            {/* Right eye */}
             <ellipse cx="100" cy="52" rx="12" ry="14" fill="#0D1F1C"/>
-            <ellipse cx="100" cy="52" rx="9" ry="11" fill="url(#eyeGradSplash)"/>
+            <ellipse cx="100" cy="52" rx="9" ry="11" fill="url(#eyeGrad)"/>
             <motion.ellipse 
-              cx="100" cy="52" rx="9" ry="11" fill="url(#eyeGradSplash)"
+              cx="100" cy="52" rx="9" ry="11" fill="url(#eyeGrad)"
               animate={{ scaleY: [1, 0.1, 1] }}
               transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
             />
@@ -120,13 +115,13 @@ export default function Splash({ onComplete }: SplashProps) {
           />
           
           {/* Body */}
-          <path d="M50 95 Q50 105 55 115 L55 140 Q55 150 65 155 L95 155 Q105 150 105 140 L105 115 Q110 105 110 95 Q110 90 80 90 Q50 90 50 95Z" fill="url(#bodyGradSplash)" filter="url(#shadowSplash)"/>
+          <path d="M50 95 Q50 105 55 115 L55 140 Q55 150 65 155 L95 155 Q105 150 105 140 L105 115 Q110 105 110 95 Q110 90 80 90 Q50 90 50 95Z" fill="url(#bodyGrad)" filter="url(#shadow)"/>
           
           {/* Chest light */}
           <motion.circle 
             cx="80" cy="115" r="8" 
             fill="#5EEAD4"
-            filter="url(#glowSplash)"
+            filter="url(#glow)"
             animate={{ opacity: [0.6, 1, 0.6], scale: [0.9, 1.1, 0.9] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -138,7 +133,7 @@ export default function Splash({ onComplete }: SplashProps) {
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             style={{ transformOrigin: "45px 105px" }}
           >
-            <rect x="30" y="100" width="20" height="35" rx="10" fill="url(#bodyGradSplash)" filter="url(#shadowSplash)"/>
+            <rect x="30" y="100" width="20" height="35" rx="10" fill="url(#bodyGrad)" filter="url(#shadow)"/>
             <circle cx="40" cy="140" r="10" fill="#2DD4BF"/>
           </motion.g>
           <motion.g
@@ -146,13 +141,15 @@ export default function Splash({ onComplete }: SplashProps) {
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             style={{ transformOrigin: "115px 105px" }}
           >
-            <rect x="110" y="100" width="20" height="35" rx="10" fill="url(#bodyGradSplash)" filter="url(#shadowSplash)"/>
+            <rect x="110" y="100" width="20" height="35" rx="10" fill="url(#bodyGrad)" filter="url(#shadow)"/>
             <circle cx="120" cy="140" r="10" fill="#2DD4BF"/>
           </motion.g>
           
           {/* Legs */}
-          <rect x="60" y="152" width="16" height="20" rx="8" fill="url(#bodyGradSplash)"/>
-          <rect x="84" y="152" width="16" height="20" rx="8" fill="url(#bodyGradSplash)"/>
+          <rect x="60" y="152" width="16" height="20" rx="8" fill="url(#bodyGrad)"/>
+          <rect x="84" y="152" width="16" height="20" rx="8" fill="url(#bodyGrad)"/>
+          
+          {/* Feet */}
           <ellipse cx="68" cy="175" rx="12" ry="6" fill="#14B8A6"/>
           <ellipse cx="92" cy="175" rx="12" ry="6" fill="#14B8A6"/>
         </svg>
@@ -160,32 +157,19 @@ export default function Splash({ onComplete }: SplashProps) {
 
       {/* App Name */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="mt-8 text-center z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="mt-6 z-10"
       >
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-2xl font-bold">
           <span className="text-white">Study</span>
           <span className="text-teal-400">Genie</span>
         </h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="text-gray-400 mt-2 text-sm"
-        >
-          Your AI Study Companion
-        </motion.p>
       </motion.div>
 
       {/* Loading Dots */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="flex gap-2 mt-8 z-10"
-      >
+      <div className="flex gap-2 mt-6 z-10">
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
@@ -199,17 +183,17 @@ export default function Splash({ onComplete }: SplashProps) {
               delay: i * 0.15,
               ease: "easeInOut",
             }}
-            className="w-3 h-3 rounded-full bg-teal-400"
+            className="w-2.5 h-2.5 rounded-full bg-teal-400"
           />
         ))}
-      </motion.div>
+      </div>
 
-      {/* Bottom Glow */}
+      {/* Bottom Glow Line */}
       <motion.div
-        animate={{ opacity: [0.2, 0.5, 0.2], scaleX: [0.6, 1, 0.6] }}
+        animate={{ opacity: [0.3, 0.6, 0.3], scaleX: [0.8, 1, 0.8] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-teal-500 to-transparent"
       />
-    </motion.div>
+    </div>
   )
 }

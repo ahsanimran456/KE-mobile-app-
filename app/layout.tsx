@@ -4,6 +4,7 @@ import { Space_Grotesk, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { AuthProvider } from "@/contexts/AuthContext"
 import { Toaster } from "sonner"
+import AppWrapper from "@/components/app-wrapper"
 import "./globals.css"
 
 const spaceGrotesk = Space_Grotesk({ 
@@ -59,7 +60,9 @@ export default function RootLayout({
       </head>
       <body className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <AuthProvider>
-          {children}
+          <AppWrapper>
+            {children}
+          </AppWrapper>
           <Toaster 
             position="top-center" 
             theme="dark"
