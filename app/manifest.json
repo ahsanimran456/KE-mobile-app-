@@ -1,11 +1,11 @@
 {
-  "name": "My Billing App",
-  "short_name": "Billing",
-  "description": "Utility billing and payment management app",
+  "name": "Study with AI",
+  "short_name": "StudyGenie",
+  "description": "Your AI-powered study assistant for smart learning",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#F29200",
+  "background_color": "#0a0f14",
+  "theme_color": "#0a0f14",
   "orientation": "portrait",
   "icons": [
     {
@@ -15,16 +15,16 @@
       "purpose": "any"
     },
     {
-      "src": "/icon-512x512.jpg",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
       "src": "/icon-192x192-maskable.jpg",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512x512.jpg",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/icon-512x512-maskable.jpg",
@@ -37,8 +37,10 @@
     {
       "src": "/screenshot-mobile.jpg",
       "sizes": "390x844",
-      "type": "image/png",
+      "type": "image/jpeg",
       "form_factor": "narrow"
     }
-  ]
+  ],
+  "categories": ["education", "productivity"],
+  "prefer_related_applications": false
 }

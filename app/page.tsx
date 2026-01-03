@@ -11,8 +11,8 @@ export default function RootPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false)
-      router.push("/home")
-    }, 7000) // Show splash for 7 seconds
+      router.push("/welcome")
+    }, 3500)
 
     return () => clearTimeout(timer)
   }, [router])
