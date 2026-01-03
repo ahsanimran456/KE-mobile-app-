@@ -14,7 +14,7 @@ const navItems = [
   { icon: User, label: "Profile", href: "/profile" },
 ]
 
-export default function BottomNav() {
+function BottomNav() {
   const pathname = usePathname()
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
@@ -105,3 +105,6 @@ export default function BottomNav() {
     </div>
   )
 }
+
+export { BottomNav }
+export default BottomNav
