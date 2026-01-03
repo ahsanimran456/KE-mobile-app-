@@ -72,9 +72,9 @@ function BottomNav() {
   const activeIndex = getCurrentIndex()
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="bg-[#0d1117] border-t border-gray-800">
-        <div className="flex items-center justify-around py-1.5 px-1">
+    <div className="fixed bottom-0 left-0 right-0 z-50 pb-[env(safe-area-inset-bottom)]">
+      <div className="bg-[#0d1117] border-t border-gray-800/80">
+        <div className="flex items-center justify-around py-2 px-2">
           {navItems.map((item, index) => {
             const isActive = activeIndex === index
             
@@ -82,19 +82,19 @@ function BottomNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex flex-col items-center gap-0.5 py-1 px-3"
+                className="flex flex-col items-center gap-1 py-1.5 px-4"
               >
                 <motion.div 
                   whileTap={{ scale: 0.9 }}
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center ${
                     isActive 
-                      ? "bg-gradient-to-br from-teal-500 to-teal-600 shadow-md shadow-teal-500/30" 
+                      ? "bg-gradient-to-br from-teal-500 to-teal-600 shadow-lg shadow-teal-500/30" 
                       : "bg-gray-800/60"
                   }`}
                 >
-                  <item.icon className={`w-[18px] h-[18px] ${isActive ? "text-white" : "text-gray-500"}`} />
+                  <item.icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-500"}`} />
                 </motion.div>
-                <span className={`text-[9px] font-medium ${isActive ? "text-teal-400" : "text-gray-500"}`}>
+                <span className={`text-[10px] font-medium ${isActive ? "text-teal-400" : "text-gray-500"}`}>
                   {item.label}
                 </span>
               </Link>

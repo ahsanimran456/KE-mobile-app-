@@ -9,7 +9,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/AuthContext"
 import { createMultipleTasks, Task } from "@/lib/firestore"
-import openai from "@/lib/openai"
 import { toast } from "sonner"
 
 interface GeneratedTask {
@@ -53,55 +52,28 @@ export default function GeneratePlanPage() {
     setGenerating(true)
 
     try {
-      const prompt = `Create a daily study plan with lecture content for a university student:
-
-Student Info:
-- Subjects: ${profile.subjects.join(", ")}
-- Available study time: ${profile.studyHoursPerDay} hours per day
-- Goals: ${profile.goals?.join(", ") || "General improvement"}
-- Exam dates: ${profile.examDates?.map(e => `${e.subject}: ${e.date}`).join(", ") || "Not specified"}
-
-Generate a JSON array of ${Math.min(Math.floor(profile.studyHoursPerDay * 1.2), 6)} study tasks. Each task MUST include:
-- title: task name (e.g., "Learn Calculus - Derivatives")
-- subject: subject name from the list
-- duration: minutes (30, 45, or 60)
-- time: start time in HH:MM (24h), starting from 09:00
-- priority: "high", "medium", or "low"
-- lectureTitle: a catchy lecture title for this topic
-- lectureContent: A detailed educational lecture (300-500 words) explaining the topic. Include:
-  * Introduction to the concept
-  * Key points and explanations
-  * Examples where relevant
-  * Summary/key takeaways
-  * Tips for remembering
-
-Make lectures engaging, easy to understand, and suitable for university students.
-
-Return ONLY valid JSON array:
-[{"title":"...", "subject":"...", "duration":45, "time":"09:00", "priority":"high", "lectureTitle":"...", "lectureContent":"..."}]`
-
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content: "You are an expert educational content creator and study planner. Create detailed, engaging lectures that help students understand concepts easily. Return only valid JSON."
-          },
-          { role: "user", content: prompt }
-        ],
-        max_tokens: 4000,
-        temperature: 0.7,
+      const response = await fetch("/api/generate-plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subjects: profile.subjects,
+          studyHours: profile.studyHoursPerDay,
+          goals: profile.goals,
+          examDates: profile.examDates
+        })
       })
 
-      const content = response.choices[0].message.content || "[]"
-      const jsonMatch = content.match(/\[[\s\S]*\]/)
-      
-      if (jsonMatch) {
-        const tasks = JSON.parse(jsonMatch[0]) as GeneratedTask[]
-        setGeneratedTasks(tasks)
+      const data = await response.json()
+
+      if (data.error) {
+        throw new Error(data.error)
+      }
+
+      if (data.tasks && data.tasks.length > 0) {
+        setGeneratedTasks(data.tasks)
         toast.success("Study plan with lectures generated!")
       } else {
-        throw new Error("Invalid response format")
+        throw new Error("No tasks generated")
       }
     } catch (error) {
       console.error("Error generating plan:", error)
@@ -158,7 +130,6 @@ Return ONLY valid JSON array:
         completed: false,
         date: today,
         createdAt: new Date().toISOString(),
-        // Lecture content
         hasLecture: true,
         lectureTitle: task.lectureTitle,
         lectureContent: task.lectureContent,
@@ -261,7 +232,7 @@ Return ONLY valid JSON array:
             <Button
               onClick={generatePlan}
               disabled={generating}
-              className="w-full h-14 bg-gradient-to-r from-cyan-500 to-cyan-400 hover:from-cyan-400 hover:to-cyan-300 text-gray-900 font-semibold text-lg rounded-xl glow-cyan"
+              className="w-full h-14 bg-gradient-to-r from-cyan-500 to-cyan-400 hover:from-cyan-400 hover:to-cyan-300 text-gray-900 font-semibold text-lg rounded-xl"
             >
               {generating ? (
                 <>
